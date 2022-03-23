@@ -15,7 +15,7 @@ pub mod teller {
         Ok(())
     }
 
-    pub fn voegToe(ctx: Context<Opteller>) -> Result<()> {
+    pub fn voeg_toe(ctx: Context<Opteller>) -> Result<()> {
         let teller = &mut ctx.accounts.teller;
         teller.inhoud += 1;
 

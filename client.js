@@ -27,9 +27,12 @@ class AnchorProgramma {
 
   async nieuweTeller() {
     const nieuweTeller = anchor.web3.Keypair.generate();
+
+    // publicKey
+    // privateKey
   
     await this.program.rpc.maak(
-      nieuweTeller.publicKey,
+      prov.wallet.publicKey,
       {
         accounts: {
           teller:        nieuweTeller.publicKey,
@@ -37,18 +40,23 @@ class AnchorProgramma {
           systemProgram: SystemProgram.programId
         },
         signers: [nieuweTeller] // prov.wallet zit hier door Anchor automatisch al bij!
-      });
+      }
+    );
     
+    console.log(nieuweTeller);
+
     return nieuweTeller;
   }
 
   async voegToe() {
     console.log("Aan het toevoegen")
+    
     await this.program.rpc.voegToe({
       accounts: {
         teller:     this.teller.publicKey,
         autoriteit: prov.wallet.publicKey,
-      }
+      },
+      //signers: [prov.wallet.publicKey]
     });
 
     console.log("Alles gaat lekker, we hebben ééntje toegevoegd aan de waarde.")
@@ -61,7 +69,10 @@ async function main() {
 
   await p.voegToe();
 
-  console.log(p.program.account.teller.fetch(p.teller))
+  // let counterAccount = await program.account.counter.fetch(counter.publicKey);
+  let tellerAccount = await p.program.account.getal.fetch(p.teller.publicKey);
+  
+  console.log("Nieuw getal: ", tellerAccount.inhoud.toNumber())
 }
 
 console.log("Running client.");
